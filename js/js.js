@@ -66,22 +66,7 @@ function scrollTotop() {
 }
 scrollTotop();
 
-/*点击出现评论框*/
-function conmentInput() {
-    var a = event.srcElement ? event.srcElement : event.target;
-    var b = a.parentNode;
-    var oDiv = b.parentNode;
-    var comment = document.createElement("div");
-    comment.className="input_reply";
-    comment.innerHTML="<input type=\"text\" placeholder=\"请输入评论\"><button>回复</button>";
-    if (a.index == true) {
-        oDiv.removeChild(oDiv.children[2]);
-        a.index = false;
-    } else {
-        oDiv.appendChild(comment);
-        a.index = true;
-    }
-}
+
 
 /*移动端左侧菜单按钮事件*/
 function toggleMenu(id1,id2) {
@@ -117,32 +102,41 @@ function courseNav(event) {
     }
 }
 
-/*弹出框*/
-function popBox(e) {
-    var popbox = document.getElementById("pop_box");
-    if (e == true){
-        popbox.style.display = 'block';
-    }else {
-        popbox.style.display = 'none';
-    }
+
+
+//返回
+function goBack() {
+    window.history.go(-1);
 }
 
-/*教程发布 文章排列升序*/
-function sortUp(event) {
-    window.event? window.event.cancelBubble = true : e.stopPropagation();
-    var o = event.srcElement ? event.srcElement : event.target;
-    var curLi = o.parentNode.parentNode;
-    var oLis = o.parentNode.parentNode.parentNode.children;
-    var arr =tools.listToArray(oLis);
-    var curLi_index = arr.indexOf(curLi);
-    if (curLi_index == 0){
-        alert('已经到达最前！');
+//弹出框
+function popBox(value,state,locationUrl) {
+    var pop_box_container = document.getElementById("pop_box_container");
+    var p_div = document.createElement("div");
+    var frag;
+    if (state == 1){
+        frag = "<h1>"+value+"</h1><a class='c_btn c_btn_imp pop' href="+locationUrl+" >确定</a>";
     }else {
-        curLi.parentNode.insertBefore(curLi, oLis[curLi_index - 1]);
+        frag = "<h1>"+value+"</h1><button class='c_btn c_btn_imp' onclick=\"removePopBox("+state+")\">确定</button>";
+    }
+    p_div.innerHTML = "<div class='pop_box'>" +
+        "<div>" +
+        frag +
+        "</div>" +
+        "</div>";
+    pop_box_container.appendChild(p_div);
+    $("#pop_box_container").fadeIn();
+
+}
+//销毁弹出框
+function removePopBox(e) {
+    var pop_box_container = document.getElementById("pop_box_container");
+    pop_box_container.removeChild(pop_box_container.firstChild);
+    $("#pop_box_container").fadeOut();
+    if (e == 0){
+        window.location.reload();
     }
 }
-
-
 
 
 
